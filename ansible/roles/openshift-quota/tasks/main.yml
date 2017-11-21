@@ -18,7 +18,7 @@
         name: ansibletestprojectgucore
       displayName: Ansible Test Project
       description: This project was created using Ansible
-    token:
+    token: "{{ ocp_token }}"
 # - name: Set user based quota
 #   oc:
 #     validate_certs: False
