@@ -1,11 +1,9 @@
 ---
 # tasks file for openshift-quota
+
+
 - name: Set project quotas
   oc:
-    validate_certs: "{{ ocp_validate_certs }}"
-    token: "{{ ocp_ansible_sa_token }}"
-    port: "{{ ocp_port | default(8443) }}"
-    host: "{{ ocp_host | default('localhost') }}"
     state: present
     inline:
       kind: clusterquota
@@ -25,3 +23,7 @@
           limits.memory: 20Gi
           configmaps: 20
           persistentvolumeclaims: 10
+    validate_certs: "{{ validate_certs }}"
+    token: "{{ ansible_sa_token }}"
+    apiport: "{{ apiport | default(8443) }}"
+    apihost: "{{ apihost | default('localhost') }}"
