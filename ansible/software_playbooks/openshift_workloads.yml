@@ -1,0 +1,15 @@
+# vim: set ft=ansible:
+---
+- name: Step 00x local host preparation for OpenShift deployment
+  hosts: localhost
+  connection: local
+  become: False
+  gather_facts: False
+  vars_files:
+    - "../configs/{{ env_type }}/env_vars.yml"
+    - "../configs/{{ env_type }}/env_secret_vars.yml"
+    - "../configs/{{ env_type }}/ssh_vars.yml"
+  tags:
+    - create_openshift_workloads
+  roles:
+    - { role: "{{ ANSIBLE_REPO_PATH }}/roles/openshift-quota", when: 'openshift_quota is defined' }
