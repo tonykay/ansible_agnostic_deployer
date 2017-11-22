@@ -6,50 +6,32 @@
     - "{{ocp_token}}"
     - "{{ocp_master_api}}"
 
-- name: Create project
+- name: Create user quota
   oc:
     host: master.dev1.openshift.opentlc.com
     port: 443
     validate_certs: false
     state: present
-    inline:
-      kind: ProjectRequest
-      metadata:
-        name: ansibletestprojectgucore
-      displayName: Ansible Test Project
-      description: This project was created using Ansible
     token: "{{ ocp_token }}"
-# - name: Set user based quota
-#   oc:
-#     validate_certs: False
-#     host: "{{ ocp_master_api }}"
-#     token: "{{ocp_token}}"
-#     port: 443
-#     state: present
-#     inline:
-#       kind: ProjectRequest
-#       metadata:
-#         name: ansibletestproject
-#       displayName: Ansible Test Project
-#       description: This project was created using Ansible
-    # inline:
-    #   kind: ClusterResourceQuota
-    #   metadata:
-    #     name: "clusterquota-{{ocp_username}}"
-    #   spec:
-    #     quota:
-    #       hard:
-    #         pods: "{{ pod_quota }}"
-    #         services: "{{ service_quota }}"
-    #         replicationcontrollers: "{{ rc_quota }}"
-    #         secrets: "{{ secret_quota }}"
-    #         requests.storage: "{{ storage_quota }}"
-    #         requests.memory: 8Gi
-    #         requests.cpu: 6
-    #         limits.cpu: 10
-    #         limits.memory: 20Gi
-    #         configmaps: 20
-    #         persistentvolumeclaims: 10
-    #     selector:
-    #       annotations:
-    #         openshift.io/requester: "{{ocp_username}}"
+
+    inline:
+      kind: ClusterResourceQuota
+      metadata:
+        name: "clusterquota-{{ocp_username}}"
+      spec:
+        quota:
+          hard:
+            pods: "{{ pod_quota }}"
+            services: "{{ service_quota }}"
+            replicationcontrollers: "{{ rc_quota }}"
+            secrets: "{{ secret_quota }}"
+            requests.storage: "{{ storage_quota }}"
+            requests.memory: 8Gi
+            requests.cpu: 6
+            limits.cpu: 10
+            limits.memory: 20Gi
+            configmaps: 20
+            persistentvolumeclaims: 10
+        selector:
+          annotations:
+            openshift.io/requester: "{{ocp_username}}"
