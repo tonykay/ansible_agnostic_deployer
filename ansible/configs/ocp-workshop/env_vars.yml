@@ -30,6 +30,7 @@ guid: defaultguid
 zabbix_host: 23.246.247.58
 
 install_nfs: true
+install_cns: false
 install_bastion: true
 install_common: true
 install_opentlc_integration: true
