@@ -178,7 +178,12 @@ openshift_hosted_registry_enforcequota=true
 masters
 etcd
 nodes
+{% if install_nfs == “true” %}
 nfs
+{% endif %}
+{% if install_cns == “true” %}
+glusterfs
+{% endif %}
 {% if new_node_instance_count > 0 %}
 new_nodes
 {% endif %}
@@ -210,13 +215,23 @@ new_nodes
 {{ hostvars[host].internaldns }} openshift_hostname={{ hostvars[host].internaldns }} ansible_ssh_user={{remote_user}} ansible_ssh_private_key_file=~/.ssh/{{key_name}}.pem openshift_node_labels="{'logging':'true','cluster': '{{guid}}', 'env':'users', 'zone': '{{hostvars[host]['placement']}}'}"
 {% endfor %}
 
+## These are the Gluster nodes
+{% for host in groups['support'] %}
+{{ hostvars[host].internaldns }} openshift_hostname={{ hostvars[host].internaldns }} ansible_ssh_user={{remote_user}} ansible_ssh_private_key_file=~/.ssh/{{key_name}}.pem openshift_node_labels="{'logging':'true','cluster': '{{guid}}', 'env':'glusterfs', 'zone': '{{hostvars[host]['placement']}}'}"
+{% endfor %}
+
 {% if new_node_instance_count > 0 %}
 # scaleup performed, leave an empty group, see:
 # https://docs.openshift.com/container-platform/3.5/install_config/adding_hosts_to_existing_cluster.html
 [new_nodes]
 {% endif %}
 
+{% if install_nfs == “true” %}
 [nfs]
+{% endif %}
+{% if install_cns == “true” %}
+[glusterfs]
+{% endif %}
 {% for host in groups['support'] %}
 {{ hostvars[host].internaldns }} openshift_hostname={{ hostvars[host].internaldns }} ansible_ssh_user={{remote_user}} ansible_ssh_private_key_file=~/.ssh/{{key_name}}.pem
 {% endfor %}
