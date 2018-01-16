@@ -233,5 +233,5 @@ new_nodes
 [glusterfs]
 {% endif %}
 {% for host in groups['support'] %}
-{{ hostvars[host].internaldns }} openshift_hostname={{ hostvars[host].internaldns }} ansible_ssh_user={{remote_user}} ansible_ssh_private_key_file=~/.ssh/{{key_name}}.pem
+{{ hostvars[host].internaldns }} openshift_hostname={{ hostvars[host].internaldns }} glusterfs_ip={{ hostvars[host].PrivateIp? }} glusterfs_devices='[ "/dev/xvdc"]'
 {% endfor %}
