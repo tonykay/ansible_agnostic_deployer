@@ -59,6 +59,16 @@ security_groups:
         from_group: HostSG
         rule_type: Ingress
 
+  - name: ClassroomSG 
+    rules:
+      - name: HostClassroomTerminal
+        description: "Allow terminal from HostSG nodes"
+        from_port: 10080
+        to_port: 10080
+        protocol: tcp
+        cidr: "0.0.0.0/0"
+        rule_type: Ingress
+
 # Environment Instances
 instances:
   - name: "control"
